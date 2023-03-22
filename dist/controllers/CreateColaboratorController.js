@@ -9,33 +9,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateProductController = void 0;
+exports.CreateColaboratorController = void 0;
 const prismaClient_1 = require("../database/prismaClient");
-class CreateProductController {
+class CreateColaboratorController {
     handle(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, price, codCean, description, voltage, facture_id } = request.body;
-            const numberPrice = Number(price);
-            const numberCodCean = Number(codCean);
-            const numberFactureId = Number(facture_id);
+            const { name, cpf, email, senha } = request.body;
             try {
-                const product = yield prismaClient_1.prismaClient.product.create({
+                const colaborator = yield prismaClient_1.prismaClient.colaborator.create({
                     data: {
                         name,
-                        price: numberPrice,
-                        codCean: numberCodCean,
-                        description,
-                        voltage,
-                        facture_id: numberFactureId
-                    },
+                        cpf,
+                        email,
+                        senha
+                    }
                 });
-                return response.status(200).json(product);
+                return response.status(200).json({ msg: "coalborator created successfully!", colaborator });
             }
             catch (error) {
-                response.status(400).json({ msg: error });
+                return response.status(400).json({ msg: "coalborator created failure!", error });
             }
-            ;
         });
     }
 }
-exports.CreateProductController = CreateProductController;
+exports.CreateColaboratorController = CreateColaboratorController;

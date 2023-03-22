@@ -9,22 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindProductIdController = void 0;
+exports.FindFactureIdController = void 0;
 const prismaClient_1 = require("../database/prismaClient");
-class FindProductIdController {
+class FindFactureIdController {
     handle(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = request.params;
             const numberId = Number(id);
             if (numberId !== undefined && !!numberId) {
                 try {
-                    const product = yield prismaClient_1.prismaClient.product.findFirst({
+                    const facture = yield prismaClient_1.prismaClient.facture.findFirst({
                         where: {
                             id: numberId,
-                        }
+                        },
                     });
-                    if (!!product) {
-                        return response.status(200).json({ msg: "Request as sucessful!", product });
+                    if (!!facture) {
+                        return response.status(200).json({ msg: "Request as sucessful!", facture });
                     }
                     else {
                         return response.status(500).json({ msg: "This id does not exist!" });
@@ -40,4 +40,4 @@ class FindProductIdController {
         });
     }
 }
-exports.FindProductIdController = FindProductIdController;
+exports.FindFactureIdController = FindFactureIdController;

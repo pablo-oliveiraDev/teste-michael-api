@@ -9,33 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateProductController = void 0;
+exports.FindAllFactureController = void 0;
 const prismaClient_1 = require("../database/prismaClient");
-class CreateProductController {
+class FindAllFactureController {
     handle(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, price, codCean, description, voltage, facture_id } = request.body;
-            const numberPrice = Number(price);
-            const numberCodCean = Number(codCean);
-            const numberFactureId = Number(facture_id);
             try {
-                const product = yield prismaClient_1.prismaClient.product.create({
-                    data: {
-                        name,
-                        price: numberPrice,
-                        codCean: numberCodCean,
-                        description,
-                        voltage,
-                        facture_id: numberFactureId
-                    },
+                const facture = yield prismaClient_1.prismaClient.facture.findMany({
+                    orderBy: {
+                        id: "asc",
+                    }
                 });
-                return response.status(200).json(product);
+                return response.status(200).json({ msg: "Request sucessfull!", facture });
             }
             catch (error) {
-                response.status(400).json({ msg: error });
+                return response.status(400).json({ msg: "Request failure!", error });
             }
-            ;
         });
     }
 }
-exports.CreateProductController = CreateProductController;
+exports.FindAllFactureController = FindAllFactureController;

@@ -9,35 +9,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindProductIdController = void 0;
+exports.UpdateFactureController = void 0;
 const prismaClient_1 = require("../database/prismaClient");
-class FindProductIdController {
+class UpdateFactureController {
     handle(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = request.params;
+            const { name } = request.body;
             const numberId = Number(id);
-            if (numberId !== undefined && !!numberId) {
+            if (!!numberId) {
                 try {
-                    const product = yield prismaClient_1.prismaClient.product.findFirst({
+                    const facture = yield prismaClient_1.prismaClient.facture.update({
                         where: {
                             id: numberId,
+                        },
+                        data: {
+                            name,
                         }
                     });
-                    if (!!product) {
-                        return response.status(200).json({ msg: "Request as sucessful!", product });
+                    if (!!facture.name) {
+                        return response.status(200).json({ msg: "Update as sucessful!", facture });
                     }
                     else {
-                        return response.status(500).json({ msg: "This id does not exist!" });
+                        return response.status(500).json({ msg: "This id does not exist!", facture });
                     }
                 }
                 catch (error) {
-                    return response.status(400).json({ msg: "Request as failure!", error });
+                    return response.status(400).json({ msg: "Request as failure!", error, numberId });
                 }
             }
             else {
                 return response.status(500).json({ msg: "id is not valid!" });
             }
+            ;
         });
     }
 }
-exports.FindProductIdController = FindProductIdController;
+exports.UpdateFactureController = UpdateFactureController;

@@ -9,11 +9,13 @@ import { FindFactureIdController } from "../controllers/FindFactureIdController"
 import { DeleteProductController } from "../controllers/DeleteProductController";
 import { UpdateProductController } from "../controllers/UpdateProductController";
 import { UpdateFactureController } from "../controllers/UpdateFactureController";
+import { CreateEmployeeController } from "../controllers/CreateEmployeeController";
 
 const router = Router();
 const createProduct = new CreateProductController();
 const createProductFacture = new CreateProductFactureController();
 const createFacture = new CreateFactureController();
+const createEmployee = new CreateEmployeeController();
 const findProductId = new FindProductIdController();
 const findFactureId = new FindFactureIdController();
 const findAllProduct = new FindAllProductController();
@@ -26,6 +28,7 @@ const updateFacture = new UpdateFactureController();
 router.post("/product", createProduct.handle);
 router.post("/productFacture", createProductFacture.handle);
 router.post("/facture", createFacture.handle);
+router.post("/employee", createEmployee.handle);
 router.get("/facture", findAllFacture.handle);
 router.get("/product/:id", findProductId.handle);
 router.get("/facture/:id", findFactureId.handle);

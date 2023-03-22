@@ -9,29 +9,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FindProductIdController = void 0;
+exports.UpdateProductController = void 0;
 const prismaClient_1 = require("../database/prismaClient");
-class FindProductIdController {
+class UpdateProductController {
     handle(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = request.params;
+            const { name, price, codCean, description, voltage, facture_id } = request.body;
+            const numberPrice = Number(price);
+            const numberCodCean = Number(codCean);
+            const numberFactureId = Number(facture_id);
             const numberId = Number(id);
-            if (numberId !== undefined && !!numberId) {
+            if (!!numberId) {
                 try {
-                    const product = yield prismaClient_1.prismaClient.product.findFirst({
+                    const product = yield prismaClient_1.prismaClient.product.update({
                         where: {
                             id: numberId,
+                        },
+                        data: {
+                            name,
+                            price: numberPrice,
+                            codCean: numberCodCean,
+                            description,
+                            voltage,
+                            facture_id: numberFactureId
                         }
                     });
-                    if (!!product) {
-                        return response.status(200).json({ msg: "Request as sucessful!", product });
+                    if (!!product && product !== null) {
+                        return response.status(200).json({ msg: "Update as sucessfull!", product });
                     }
                     else {
-                        return response.status(500).json({ msg: "This id does not exist!" });
+                        return response.status(500).json({ msg: "id does not exist!", product });
                     }
                 }
                 catch (error) {
-                    return response.status(400).json({ msg: "Request as failure!", error });
+                    return response.status(400).json({ msg: "Update as failure!", error });
                 }
             }
             else {
@@ -40,4 +52,4 @@ class FindProductIdController {
         });
     }
 }
-exports.FindProductIdController = FindProductIdController;
+exports.UpdateProductController = UpdateProductController;

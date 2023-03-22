@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateProductController = void 0;
+exports.CreateProductFactureController = void 0;
 const prismaClient_1 = require("../database/prismaClient");
-class CreateProductController {
+class CreateProductFactureController {
     handle(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, price, codCean, description, voltage, facture_id } = request.body;
@@ -19,23 +19,32 @@ class CreateProductController {
             const numberCodCean = Number(codCean);
             const numberFactureId = Number(facture_id);
             try {
-                const product = yield prismaClient_1.prismaClient.product.create({
+                const product = yield prismaClient_1.prismaClient.productFacture.create({
                     data: {
-                        name,
-                        price: numberPrice,
-                        codCean: numberCodCean,
-                        description,
-                        voltage,
-                        facture_id: numberFactureId
+                        product: {
+                            create: {
+                                name,
+                                price: numberPrice,
+                                codCean: numberCodCean,
+                                description,
+                                voltage,
+                                facture_id: numberFactureId
+                            },
+                        },
+                        facture: {
+                            connect: {
+                                id: numberFactureId,
+                            },
+                        },
                     },
                 });
                 return response.status(200).json(product);
             }
             catch (error) {
-                response.status(400).json({ msg: error });
+                response.status(400).json({ msg: "error", error });
             }
             ;
         });
     }
 }
-exports.CreateProductController = CreateProductController;
+exports.CreateProductFactureController = CreateProductFactureController;
